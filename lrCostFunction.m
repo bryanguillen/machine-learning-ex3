@@ -36,14 +36,13 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
-% another way of doing J vectorized as in the tutorial?
-J = ( sum( (-y .* log(sigmoid(X * theta))) - ((1 - y) .* log(1 - sigmoid(X * theta))) ) / m ) + ( (lambda / (2*m)) * (sum(theta(2:length(theta)) .** 2)) ); 
+sigm = sigmoid(X*theta);  
+J = sum(-y.*log(sigm) - (1-y).*log(1-sigm))/m + lambda * sum(theta(2:end).^2)/(2*m);  
 
-% another way to vectorize the gradient 
-grad(1) = ( (X(:, 1)' * (sigmoid(X* theta) - y)) / m );
-grad(2:length(theta)) = ( (X(:, size(X, 2))' * (sigmoid(X * theta) - y)) / m ) + ((lambda * theta(2:length(theta))) / m);  
-
-
+grad = X' * (sigm-y)/m;  
+grad0 = grad(1);  
+grad = grad + (lambda/m)*theta;  
+grad(1) = grad0;
 
 
 
